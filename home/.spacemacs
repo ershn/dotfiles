@@ -320,41 +320,54 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq powerline-default-separator nil)
-  (setq neo-theme 'nerd)
-  (spacemacs/set-leader-keys "ot" 'helm-etags-select)
-  (spacemacs/set-leader-keys "or" 'query-replace)
-  (setq projectile-tags-command "ctags --links=no --exclude=periphlib --exclude=build --exclude=cache -Re -f \"%s\" %s")
-  (setq ruby-insert-encoding-magic-comment nil)
-  (setq-default mac-right-option-modifier nil)
-  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
-  (add-to-list 'auto-mode-alist '("\\.tpl\\'" . (lambda () (web-mode) (setq indent-tabs-mode t))))
   (setq dotspacemacs-enable-paste-transient-state t)
   (setq dotspacemacs-distinguish-gui-tab t)
+
+  (setq-default mac-right-option-modifier nil)
+
+  (setq neo-theme 'nerd)
+  (setq powerline-default-separator nil)
+  (setq ruby-insert-encoding-magic-comment nil)
+  (setq projectile-tags-command "ctags --links=no --exclude=periphlib --exclude=build --exclude=cache -Re -f \"%s\" %s")
+
+  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\'" . (lambda () (web-mode) (setq indent-tabs-mode t))))
+
+  (global-set-key (kbd "C-SPC") 'spacemacs-cmds)
+  (global-set-key (kbd "C-@") 'spacemacs-cmds)
+  (global-set-key (kbd "C-]") 'set-mark-command)
+
+  (spacemacs/set-leader-keys "ot" 'helm-etags-select)
+  (spacemacs/set-leader-keys "or" 'query-replace)
+
+  (spacemacs/set-leader-keys "hm" 'man)
   (evil-define-key 'motion Man-mode-map
     "p" (lambda () (interactive) (Man-previous-section 1) (recenter 0))
     "n" (lambda () (interactive) (Man-next-section 1) (recenter 0))
     "s" (lambda () (interactive) (call-interactively 'Man-goto-section) (recenter 0))
     "a" (lambda () (interactive) (Man-goto-see-also-section) (recenter 0)))
-  (spacemacs/set-leader-keys "hm" 'man)
+
   (evil-set-initial-state 'term-mode 'emacs)
   (add-hook 'term-mode-hook
             (lambda ()
               (define-key term-mode-map (kbd "C-SPC") 'spacemacs-cmds)
-              (define-key term-raw-map (kbd "C-SPC") 'spacemacs-cmds)))
+              (define-key term-mode-map (kbd "C-@") 'spacemacs-cmds)
+              (define-key term-raw-map (kbd "C-SPC") 'spacemacs-cmds)
+              (define-key term-raw-map (kbd "C-@") 'spacemacs-cmds)))
+
   (evil-set-initial-state 'haskell-interactive-mode 'emacs)
   (add-hook 'haskell-interactive-mode-hook
             (lambda ()
               (define-key haskell-interactive-mode-map (kbd "C-p")
                 'haskell-interactive-mode-history-previous)
               (define-key haskell-interactive-mode-map (kbd "C-n")
-                'haskell-interactive-mode-history-next)
-              (define-key haskell-interactive-mode-map (kbd "C-SPC")
-                'spacemacs-cmds)))
+                'haskell-interactive-mode-history-next)))
+
   ;; (add-hook 'spacemacs-post-user-config-hook
   ;;           (lambda ()
   ;;             (desktop-save-mode)
   ;;             (desktop-read)))
+
   (spaceline-compile))
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -394,6 +407,7 @@ you should place your code here."
      ("M-d" . term-send-delete-word)
      ("M-," . term-send-raw)
      ("M-." . comint-dynamic-complete)))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
