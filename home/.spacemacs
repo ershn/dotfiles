@@ -345,7 +345,12 @@ you should place your code here."
   (evil-set-initial-state 'haskell-interactive-mode 'emacs)
   (add-hook 'haskell-interactive-mode-hook
             (lambda ()
-              (define-key haskell-interactive-mode-map (kbd "C-SPC") 'spacemacs-cmds)))
+              (define-key haskell-interactive-mode-map (kbd "C-p")
+                'haskell-interactive-mode-history-previous)
+              (define-key haskell-interactive-mode-map (kbd "C-n")
+                'haskell-interactive-mode-history-next)
+              (define-key haskell-interactive-mode-map (kbd "C-SPC")
+                'spacemacs-cmds)))
   ;; (add-hook 'spacemacs-post-user-config-hook
   ;;           (lambda ()
   ;;             (desktop-save-mode)
@@ -366,7 +371,26 @@ you should place your code here."
    (quote
     (winum unfill fuzzy web-mode tagedit sql-indent slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder rbenv rake pug-mode phpunit phpcbf php-extras php-auto-yasnippets pbcopy osx-trash osx-dictionary nginx-mode minitest less-css-mode launchctl helm-css-scss haml-mode emmet-mode drupal-mode php-mode csv-mode company-web web-completion-data chruby bundler inf-ruby yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline smeargle shell-pop restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox orgit org-plus-contrib org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero info+ indent-guide ido-vertical-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav dumb-jump diff-hl define-word company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode coffee-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(sh-basic-offset 2)
- '(sh-indentation 2))
+ '(sh-indentation 2)
+ '(term-bind-key-alist
+   (quote
+    (("<tab>" . term-send-tab)
+     ("C-c C-c" . term-interrupt-subjob)
+     ("C-c C-e" . term-send-esc)
+     ("C-p" . term-send-up)
+     ("C-n" . term-send-down)
+     ("C-m" . term-send-return)
+     ("C-y" . term-paste)
+     ("M-f" . term-send-forward-word)
+     ("M-b" . term-send-backward-word)
+     ("M-o" . term-send-backspace)
+     ("M-M" . term-send-forward-kill-word)
+     ("M-N" . term-send-backward-kill-word)
+     ("<C-backspace>" . term-send-backward-kill-word)
+     ("C-r" . term-send-reverse-search-history)
+     ("M-d" . term-send-delete-word)
+     ("M-," . term-send-raw)
+     ("M-." . comint-dynamic-complete)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
