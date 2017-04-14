@@ -365,6 +365,9 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method (quote pushy))
+ '(flycheck-global-modes
+   (quote
+    (web-mode slim-mode scss-mode sass-mode pug-mode less-mode haml-mode json-mode js2-mode coffee-mode php-mode haskell-mode yaml-mode)))
  '(helm-ag-base-command "rg --vimgrep --no-heading")
  '(helm-buffer-max-length 40)
  '(package-selected-packages
