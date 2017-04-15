@@ -336,6 +336,7 @@ you should place your code here."
   (global-set-key (kbd "C-SPC") 'spacemacs-cmds)
   (global-set-key (kbd "C-@") 'spacemacs-cmds)
   (global-set-key (kbd "C-]") 'set-mark-command)
+  (global-set-key (kbd "C-w") 'evil-window-map)
 
   (spacemacs/set-leader-keys "ot" 'helm-etags-select)
   (spacemacs/set-leader-keys "or" 'query-replace)
@@ -352,8 +353,10 @@ you should place your code here."
             (lambda ()
               (define-key term-mode-map (kbd "C-SPC") 'spacemacs-cmds)
               (define-key term-mode-map (kbd "C-@") 'spacemacs-cmds)
+              (define-key term-mode-map (kbd "C-w") 'evil-window-map)
               (define-key term-raw-map (kbd "C-SPC") 'spacemacs-cmds)
-              (define-key term-raw-map (kbd "C-@") 'spacemacs-cmds)))
+              (define-key term-raw-map (kbd "C-@") 'spacemacs-cmds)
+              (define-key term-raw-map (kbd "C-w") 'evil-window-map)))
 
   (evil-set-initial-state 'haskell-interactive-mode 'emacs)
   (add-hook 'haskell-interactive-mode-hook
