@@ -320,36 +320,57 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-  (setq powerline-default-separator nil)
-  (setq neo-theme 'nerd)
-  (spacemacs/set-leader-keys "ot" 'helm-etags-select)
-  (spacemacs/set-leader-keys "or" 'query-replace)
-  (setq projectile-tags-command "ctags --links=no --exclude=periphlib --exclude=build --exclude=cache -Re -f \"%s\" %s")
-  (setq ruby-insert-encoding-magic-comment nil)
-  (setq-default mac-right-option-modifier nil)
-  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
-  (add-to-list 'auto-mode-alist '("\\.tpl\\'" . (lambda () (web-mode) (setq indent-tabs-mode t))))
   (setq dotspacemacs-enable-paste-transient-state t)
   (setq dotspacemacs-distinguish-gui-tab t)
+
+  (setq-default mac-right-option-modifier nil)
+
+  (setq neo-theme 'nerd)
+  (setq powerline-default-separator nil)
+  (setq ruby-insert-encoding-magic-comment nil)
+  (setq projectile-tags-command "ctags --links=no --exclude=periphlib --exclude=build --exclude=cache -Re -f \"%s\" %s")
+
+  (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
+  (add-to-list 'auto-mode-alist '("\\.tpl\\'" . (lambda () (web-mode) (setq indent-tabs-mode t))))
+
+  (global-set-key (kbd "C-SPC") 'spacemacs-cmds)
+  (global-set-key (kbd "C-@") 'spacemacs-cmds)
+  (global-set-key (kbd "C-]") 'set-mark-command)
+  (global-set-key (kbd "C-w") 'evil-window-map)
+
+  (spacemacs/set-leader-keys "ot" 'helm-etags-select)
+  (spacemacs/set-leader-keys "or" 'query-replace)
+
+  (spacemacs/set-leader-keys "hm" 'man)
   (evil-define-key 'motion Man-mode-map
     "p" (lambda () (interactive) (Man-previous-section 1) (recenter 0))
     "n" (lambda () (interactive) (Man-next-section 1) (recenter 0))
     "s" (lambda () (interactive) (call-interactively 'Man-goto-section) (recenter 0))
     "a" (lambda () (interactive) (Man-goto-see-also-section) (recenter 0)))
-  (spacemacs/set-leader-keys "hm" 'man)
+
   (evil-set-initial-state 'term-mode 'emacs)
   (add-hook 'term-mode-hook
             (lambda ()
               (define-key term-mode-map (kbd "C-SPC") 'spacemacs-cmds)
-              (define-key term-raw-map (kbd "C-SPC") 'spacemacs-cmds)))
+              (define-key term-mode-map (kbd "C-@") 'spacemacs-cmds)
+              (define-key term-mode-map (kbd "C-w") 'evil-window-map)
+              (define-key term-raw-map (kbd "C-SPC") 'spacemacs-cmds)
+              (define-key term-raw-map (kbd "C-@") 'spacemacs-cmds)
+              (define-key term-raw-map (kbd "C-w") 'evil-window-map)))
+
   (evil-set-initial-state 'haskell-interactive-mode 'emacs)
   (add-hook 'haskell-interactive-mode-hook
             (lambda ()
-              (define-key haskell-interactive-mode-map (kbd "C-SPC") 'spacemacs-cmds)))
+              (define-key haskell-interactive-mode-map (kbd "C-p")
+                'haskell-interactive-mode-history-previous)
+              (define-key haskell-interactive-mode-map (kbd "C-n")
+                'haskell-interactive-mode-history-next)))
+
   ;; (add-hook 'spacemacs-post-user-config-hook
   ;;           (lambda ()
   ;;             (desktop-save-mode)
   ;;             (desktop-read)))
+
   (spaceline-compile))
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -369,7 +390,27 @@ you should place your code here."
    (quote
     (winum unfill fuzzy web-mode tagedit sql-indent slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder rbenv rake pug-mode phpunit phpcbf php-extras php-auto-yasnippets pbcopy osx-trash osx-dictionary nginx-mode minitest less-css-mode launchctl helm-css-scss haml-mode emmet-mode drupal-mode php-mode csv-mode company-web web-completion-data chruby bundler inf-ruby yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline smeargle shell-pop restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox orgit org-plus-contrib org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero info+ indent-guide ido-vertical-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav dumb-jump diff-hl define-word company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode coffee-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
  '(sh-basic-offset 2)
- '(sh-indentation 2))
+ '(sh-indentation 2)
+ '(term-bind-key-alist
+   (quote
+    (("<tab>" . term-send-tab)
+     ("C-c C-c" . term-interrupt-subjob)
+     ("C-c C-e" . term-send-esc)
+     ("C-p" . term-send-up)
+     ("C-n" . term-send-down)
+     ("C-m" . term-send-return)
+     ("C-y" . term-paste)
+     ("M-f" . term-send-forward-word)
+     ("M-b" . term-send-backward-word)
+     ("M-o" . term-send-backspace)
+     ("M-M" . term-send-forward-kill-word)
+     ("M-N" . term-send-backward-kill-word)
+     ("<C-backspace>" . term-send-backward-kill-word)
+     ("C-r" . term-send-reverse-search-history)
+     ("M-d" . term-send-delete-word)
+     ("M-," . term-send-raw)
+     ("M-." . comint-dynamic-complete)))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

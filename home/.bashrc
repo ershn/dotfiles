@@ -6,6 +6,7 @@ export EDITOR=vim
 alias la='ls -a'
 alias ll='ls -lh'
 alias lla='ls -lha'
+alias emacs='emacs -nw'
 
 # Switch between git branches
 git() {
