@@ -335,7 +335,6 @@ you should place your code here."
 
   (global-set-key (kbd "C-SPC") 'spacemacs-cmds)
   (global-set-key (kbd "C-@") 'spacemacs-cmds)
-  (global-set-key (kbd "C-]") 'set-mark-command)
   (global-set-key (kbd "C-w") 'evil-window-map)
 
   (spacemacs/set-leader-keys "ot" 'helm-etags-select)
