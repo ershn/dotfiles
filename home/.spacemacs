@@ -337,8 +337,9 @@ you should place your code here."
   (global-set-key (kbd "C-@") 'spacemacs-cmds)
   (global-set-key (kbd "C-w") 'evil-window-map)
 
-  (spacemacs/set-leader-keys "ot" 'helm-etags-select)
-  (spacemacs/set-leader-keys "or" 'query-replace)
+  (spacemacs/set-leader-keys "o t" 'helm-etags-select)
+  (spacemacs/set-leader-keys "o r" 'query-replace)
+  (spacemacs/set-leader-keys "o SPC" 'just-one-space)
 
   (spacemacs/set-leader-keys "hm" 'man)
   (evil-define-key 'motion Man-mode-map
