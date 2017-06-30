@@ -31,6 +31,7 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     go
      nginx
      sql
      csv
@@ -52,6 +53,9 @@ values."
      ;; org
      osx
      ruby
+     (scala :variables
+            scala-enable-eldoc t
+            scala-auto-insert-asterisk-in-comments t)
      (shell :variables
             shell-default-shell 'multi-term
             shell-default-height 30
@@ -374,6 +378,9 @@ you should place your code here."
   (add-hook 'ruby-mode-hook
             (lambda ()
               (flycheck-mode -1)))
+
+  (setq ensime-startup-notification nil)
+  (setq ensime-startup-snapshot-notification nil)
 
   ;; (add-hook 'spacemacs-post-user-config-hook
   ;;           (lambda ()
