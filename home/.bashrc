@@ -3,6 +3,7 @@ PATH="${PATH}:${HOME}/.local/bin"
 export EDITOR=vim
 
 # Alias
+alias ls='ls -GF'
 alias la='ls -a'
 alias ll='ls -lh'
 alias lla='ls -lha'
@@ -29,15 +30,46 @@ if [ -d $GCLOUD_HOME ]; then
   source $GCLOUD_HOME/path.bash.inc
 fi
 
-# Switch between git branches
+# Git commands
 git() {
-  if [ "$1" = bc ]; then
-    shift
-    local branch=$(/usr/bin/env git branch "$@" | cut -b 3- | peco)
-    git checkout "${branch}"
-  else
-    /usr/bin/env git "$@"
-  fi
+  case "$1" in
+    b)
+      /usr/bin/env git status -sb
+      ;;
+    bs)
+      shift
+      /usr/bin/env git branch "$@"
+      ;;
+    bc)
+      shift
+      local branch=$(/usr/bin/env git branch "$@" | cut -b 3- | peco)
+      /usr/bin/env git checkout "${branch}"
+      ;;
+    s)
+      shift
+      /usr/bin/env git status "$@"
+      ;;
+    svn)
+      shift
+      git_svn "$@"
+      ;;
+    *)
+      /usr/bin/env git "$@"
+      ;;
+  esac
+}
+
+git_svn() {
+  case "$1" in
+    fetch | rebase | dcommit)
+      local command=$1
+      shift
+      /usr/bin/env git svn "$command" --localtime "$@"
+      ;;
+    *)
+      /usr/bin/env git svn "$@"
+      ;;
+  esac
 }
 
 # Source homesick
