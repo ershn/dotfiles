@@ -49,6 +49,10 @@ git() {
       shift
       /usr/bin/env git status "$@"
       ;;
+    lci)
+      shift
+      /usr/bin/env git log --pretty='%h' "$@"
+      ;;
     svn)
       shift
       git_svn "$@"
