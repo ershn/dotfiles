@@ -31,6 +31,8 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     python
+     ansible
      go
      nginx
      sql
@@ -70,7 +72,7 @@ values."
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(persistent-scratch)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
@@ -349,6 +351,16 @@ you should place your code here."
   (spacemacs/set-leader-keys "o t" 'helm-etags-select)
   (spacemacs/set-leader-keys "o r" 'query-replace)
   (spacemacs/set-leader-keys "o SPC" 'just-one-space)
+  (spacemacs/set-leader-keys "o TAB"
+    (lambda () (interactive)
+      (set-variable 'indent-tabs-mode (not indent-tabs-mode))))
+  (spacemacs/set-leader-keys "o y"
+    (lambda () (interactive)
+      (kill-new (file-relative-name buffer-file-name (projectile-project-root)))))
+  (spacemacs/set-leader-keys "o Y"
+    (lambda () (interactive)
+      (kill-new (file-name-nondirectory buffer-file-name))))
+  (spacemacs/set-leader-keys "o g" 'rspec-find-spec-or-target-other-window)
 
   (spacemacs/set-leader-keys "hm" 'man)
   (evil-define-key 'motion Man-mode-map
@@ -377,7 +389,13 @@ you should place your code here."
 
   (add-hook 'ruby-mode-hook
             (lambda ()
-              (flycheck-mode -1)))
+              (flycheck-mode -1)
+              (rspec-mode)))
+
+  ;; Workaround for diff-hl and iedit conflict
+  ;; Will be fixed in Emacs 26.2
+  (add-hook 'iedit-mode-hook (lambda () (diff-hl-mode -1)))
+  (add-hook 'iedit-mode-end-hook (lambda () (diff-hl-mode +1)))
 
   (setq ensime-startup-notification nil)
   (setq ensime-startup-snapshot-notification nil)
@@ -386,6 +404,8 @@ you should place your code here."
   ;;           (lambda ()
   ;;             (desktop-save-mode)
   ;;             (desktop-read)))
+
+  (persistent-scratch-setup-default)
 
   (spaceline-compile))
 
@@ -401,7 +421,15 @@ you should place your code here."
  '(helm-buffer-max-length 40)
  '(package-selected-packages
    (quote
-    (winum unfill fuzzy web-mode tagedit sql-indent slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder rbenv rake pug-mode phpunit phpcbf php-extras php-auto-yasnippets pbcopy osx-trash osx-dictionary nginx-mode minitest less-css-mode launchctl helm-css-scss haml-mode emmet-mode drupal-mode php-mode csv-mode company-web web-completion-data chruby bundler inf-ruby yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline smeargle shell-pop restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox orgit org-plus-contrib org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero info+ indent-guide ido-vertical-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav dumb-jump diff-hl define-word company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode coffee-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+    (osx-clipboard yapfify pytest py-isort helm-pydoc undo-tree powerline pyvenv pip-requirements persistent-scratch spinner noflet markdown-mode skewer-mode simple-httpd live-py-mode json-snatcher json-reformat multiple-cursors js2-mode jinja2-mode hydra hy-mode parent-mode projectile request go-guru go-eldoc gitignore-mode fringe-helper git-gutter+ git-gutter pos-tip flycheck pkg-info epl flx highlight magit magit-popup git-commit with-editor smartparens iedit anzu evil goto-chg ensime sbt-mode scala-mode diminish cython-mode dash-functional tern company-go go-mode ghc haskell-mode company-ansible bind-map bind-key yasnippet packed ansible-doc ansible helm avy auto-complete popup company helm-core async f dash s pyenv-mode company-anaconda anaconda-mode pythonic winum unfill fuzzy web-mode tagedit sql-indent slim-mode scss-mode sass-mode rvm ruby-tools ruby-test-mode rubocop rspec-mode robe reveal-in-osx-finder rbenv rake pug-mode phpunit phpcbf php-extras php-auto-yasnippets pbcopy osx-trash osx-dictionary nginx-mode minitest less-css-mode launchctl helm-css-scss haml-mode emmet-mode drupal-mode php-mode csv-mode company-web web-completion-data chruby bundler inf-ruby yaml-mode xterm-color ws-butler window-numbering which-key web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spacemacs-theme spaceline smeargle shell-pop restart-emacs rainbow-delimiters quelpa popwin persp-mode pcre2el paradox orgit org-plus-contrib org-bullets open-junk-file neotree mwim multi-term move-text mmm-mode markdown-toc magit-gitflow macrostep lorem-ipsum livid-mode linum-relative link-hint json-mode js2-refactor js-doc intero info+ indent-guide ido-vertical-mode hungry-delete hlint-refactor hl-todo hindent highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-hoogle helm-gitignore helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag haskell-snippets google-translate golden-ratio gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ gh-md flycheck-pos-tip flycheck-haskell flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help elisp-slime-nav dumb-jump diff-hl define-word company-tern company-statistics company-ghci company-ghc company-cabal column-enforce-mode coffee-mode cmm-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(rspec-autosave-buffer t)
+ '(rspec-command-options "")
+ '(rspec-spec-command "bin/rspec_vagrant")
+ '(rspec-use-bundler-when-possible nil)
+ '(rspec-use-opts-file-when-available nil)
+ '(rspec-use-spring-when-possible nil)
+ '(rspec-use-vagrant-when-possible nil)
+ '(rspec-use-zeus-when-possible nil)
  '(sh-basic-offset 2)
  '(sh-indentation 2)
  '(term-bind-key-alist
