@@ -8,13 +8,30 @@ alias la='ls -a'
 alias ll='ls -lh'
 alias lla='ls -lha'
 alias emacs='emacs -nw'
+alias ssh='TERM=screen ssh'
+
+# rbenv
+if hash rbenv > /dev/null; then
+	eval "$(rbenv init -)"
+
+  if hash brew > /dev/null; then
+    export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl) --with-readline-dir=$(brew --prefix readline) $RUBY_CONFIGURE_OPTS"
+  fi
+fi
+
+# nodebrew
+NODEBREW_BIN=$HOME/.nodebrew/current/bin
+
+if [ -d "$NODEBREW_BIN" ]; then
+  PATH=$NODEBREW_BIN:$PATH
+fi
 
 # jEnv
 if hash jenv 2> /dev/null; then
   eval "$(jenv init -)"
 fi
 
-# Golang settings
+# Golang
 GOROOT=/usr/local/opt/go/libexec
 
 if [ -d $GOROOT ]; then
@@ -22,13 +39,28 @@ if [ -d $GOROOT ]; then
   PATH=$PATH:$(go env GOPATH)/bin:$GOROOT/bin
 fi
 
-# Google cloud settings
+# Google cloud
 GCLOUD_HOME=/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
 
 if [ -d $GCLOUD_HOME ]; then
   source $GCLOUD_HOME/completion.bash.inc
   source $GCLOUD_HOME/path.bash.inc
 fi
+
+# pyenv
+if which pyenv > /dev/null; then
+  eval "$(pyenv init -)"
+fi
+
+# Git
+GIT_PS1_SHOWDIRTYSTATE=true
+
+# Bash completion
+for file in /usr/local/etc/bash_completion.d/*; do
+  if [ -f "$file" ]; then
+    source "$file"
+  fi
+done
 
 # Git commands
 git() {
