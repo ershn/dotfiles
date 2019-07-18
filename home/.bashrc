@@ -55,12 +55,7 @@ fi
 # Git
 GIT_PS1_SHOWDIRTYSTATE=true
 
-# Bash completion
-for file in /usr/local/etc/bash_completion.d/*; do
-  if [ -f "$file" ]; then
-    source "$file"
-  fi
-done
+test -e "/usr/local/etc/bash_completion.d/git-completion.bash" && source "/usr/local/etc/bash_completion.d/git-completion.bash"
 
 # Git commands
 git() {
