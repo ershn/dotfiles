@@ -48,7 +48,7 @@ if [ -d $GCLOUD_HOME ]; then
 fi
 
 # pyenv
-if which pyenv > /dev/null; then
+if hash pyenv 2> /dev/null; then
   eval "$(pyenv init -)"
 fi
 
