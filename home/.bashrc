@@ -11,19 +11,17 @@ alias emacs='emacs -nw'
 alias ssh='TERM=screen ssh'
 
 # rbenv
-if hash rbenv > /dev/null; then
+if hash rbenv 2> /dev/null; then
 	eval "$(rbenv init -)"
 
-  if hash brew > /dev/null; then
+  if hash brew 2> /dev/null; then
     export RUBY_CONFIGURE_OPTS="--with-openssl-dir=$(brew --prefix openssl) --with-readline-dir=$(brew --prefix readline) $RUBY_CONFIGURE_OPTS"
   fi
 fi
 
-# nodebrew
-NODEBREW_BIN=$HOME/.nodebrew/current/bin
-
-if [ -d "$NODEBREW_BIN" ]; then
-  PATH=$NODEBREW_BIN:$PATH
+# nodenv
+if hash nodenv 2> /dev/null; then
+  eval "$(nodenv init -)"
 fi
 
 # jEnv
