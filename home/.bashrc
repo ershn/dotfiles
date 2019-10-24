@@ -2,6 +2,13 @@
 PATH="${PATH}:${HOME}/.local/bin"
 export EDITOR=vim
 
+# Prompt
+git_branch() {
+  git branch 2> /dev/null | sed -ne 's/^\* \(.*\)$/\1/p'
+}
+
+PS1='\[\e[33m\]\W\[\e[0m\] \[\e[31m\]$(git_branch)\[\e[0m\]\n\$ '
+
 # Alias
 alias ls='ls -GF'
 alias la='ls -a'
@@ -100,6 +107,11 @@ git_svn() {
       ;;
   esac
 }
+
+# direnv
+if hash direnv 2> /dev/null; then
+  eval "$(direnv hook bash)"
+fi
 
 # Source homesick
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"

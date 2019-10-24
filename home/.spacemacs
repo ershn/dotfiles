@@ -336,6 +336,23 @@ you should place your code here."
   (setq ruby-insert-encoding-magic-comment nil)
   (setq projectile-tags-command "ctags --links=no --exclude=periphlib --exclude=build --exclude=cache -Re -f \"%s\" %s")
 
+  (when (eq system-type 'darwin)
+    (defun mac-copy (text)
+      (let ((process-connection-type nil))
+        (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+          (process-send-string proc text)
+          (process-send-eof proc))))
+
+    (defun mac-paste ()
+      (let ((interprogram-paste-function nil)
+            (pbpaste-string (shell-command-to-string "pbpaste")))
+        (unless (equal (string-trim (current-kill 0)) (string-trim pbpaste-string))
+          pbpaste-string)))
+
+    (setq save-interprogram-paste-before-kill nil)
+    (setq interprogram-cut-function 'mac-copy)
+    (setq interprogram-paste-function 'mac-paste))
+
   (add-to-list 'auto-mode-alist '("\\.es6\\'" . js2-mode))
   (add-to-list 'auto-mode-alist '("\\.tpl\\'" . (lambda () (web-mode) (setq indent-tabs-mode t))))
 
@@ -417,7 +434,7 @@ you should place your code here."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Man-notify-method (quote pushy))
- '(helm-ag-base-command "rg --vimgrep --no-heading")
+ '(helm-ag-base-command "rg --no-heading")
  '(helm-buffer-max-length 40)
  '(package-selected-packages
    (quote
