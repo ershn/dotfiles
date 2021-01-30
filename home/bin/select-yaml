@@ -1,0 +1,37 @@
+#!/usr/bin/env RBENV_VERSION=2.6.3 rbenv exec ruby
+
+require 'open3'
+require 'yaml'
+
+def key_paths(base, path: [])
+  if base.is_a?(Hash)
+    base.flat_map do |key, value|
+      key_paths(value, path: path + [key])
+    end
+  else
+    [path]
+  end
+end
+
+def select_entry(lines)
+  lines = lines.join("\n")
+  line, error, status = Open3.capture3('peco', stdin_data: lines)
+  raise "peco failed: #{error}" unless status.success?
+  line = line.strip
+  line.empty? ? nil : line
+end
+
+def select_yaml_entry(file_path)
+  hash = YAML.load_file(file_path)
+  key_paths = key_paths(hash)
+  paths = key_paths.map { |path| path.join('/') }
+  path = select_entry(paths)
+  return unless path
+  key_path = path.split('/')
+  value = hash.dig(*key_path)
+  print value
+end
+
+raise 'No filename passed' unless ARGV.size >= 1
+
+select_yaml_entry(ARGV[0])

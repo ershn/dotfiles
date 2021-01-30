@@ -3,11 +3,11 @@ export PATH="${HOME}/bin:${PATH}:${HOME}/.local/bin"
 export EDITOR=vim
 
 # Prompt
-git_branch() {
+git-branch() {
   git branch 2> /dev/null | sed -ne 's/^\* \(.*\)$/\1/p'
 }
 
-PS1='\[\e[33m\]\W\[\e[0m\] \[\e[31m\]$(git_branch)\[\e[0m\]\n\$ '
+PS1='\[\e[33m\]\W\[\e[0m\] \[\e[31m\]$(git-branch)\[\e[0m\]\n\$ '
 PROMPT_COMMAND='printf "%%%$((COLUMNS-1))s\\r"'
 
 # ls
@@ -44,7 +44,7 @@ fi
 # Golang
 GOROOT=/usr/local/opt/go/libexec
 
-if [ -d $GOROOT ]; then
+if [[ -d $GOROOT ]]; then
   export GOROOT
   PATH=$PATH:$(go env GOPATH)/bin:$GOROOT/bin
 fi
@@ -52,7 +52,7 @@ fi
 # Google cloud
 GCLOUD_HOME=/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk
 
-if [ -d $GCLOUD_HOME ]; then
+if [[ -d $GCLOUD_HOME ]]; then
   source $GCLOUD_HOME/completion.bash.inc
   source $GCLOUD_HOME/path.bash.inc
 fi
@@ -100,7 +100,7 @@ git() {
   esac
 }
 
-git_svn() {
+git-svn() {
   case "$1" in
     fetch | rebase | dcommit)
       local command=$1
@@ -113,17 +113,37 @@ git_svn() {
   esac
 }
 
+gitlab-commit-url() {
+  if [[ -z "$GITLAB_URL" ]]; then
+    >&2 echo '$GITLAB_URL not defined'
+    return 1
+  fi
+
+  local repository_name=$(git remote show origin -n | grep 'Fetch URL' | cut -d: -f3 | cut -d. -f1)
+
+  { if [[ $# -ge 1 ]]; then echo "$@" | xargs -n1; else cat; fi } |
+    sed -e "s|^|${GITLAB_URL}/${repository_name}/commit/|" |
+    tee /tmp/gitlab_urls.$$ | pbcopy
+
+  cat /tmp/gitlab_urls.$$
+}
+
+# Password utils
+
+pswd() {
+  sudo select-yaml ~/.passwords | pbcopy
+}
+
 # direnv
 if hash direnv 2> /dev/null; then
   eval "$(direnv hook bash)"
 fi
 
 # autojump
-[ -f /usr/local/etc/profile.d/autojump.sh ] && source /usr/local/etc/profile.d/autojump.sh
+[[ -f /usr/local/etc/profile.d/autojump.sh ]] && source /usr/local/etc/profile.d/autojump.sh
 
 # Source homesick
 source "$HOME/.homesick/repos/homeshick/homeshick.sh"
 source "$HOME/.homesick/repos/homeshick/completions/homeshick-completion.bash"
 
 homeshick --quiet refresh
-export PATH="$HOME/.buyma_utils/bin:$PATH"

@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+
+set -e
+
+usage() {
+  echo "Usage: $0 (start [VPN_NAME]|stop [VPN_NAME]|status [VPN_NAME]|help)"
+  echo
+  echo 'When no command is passed, start is assumed.'
+}
+
+start() {
+  local vpn="${1:-$VPN_NAME}"
+
+  check_vpn_value "${vpn}"
+  if vpn_connected; then
+    echo "VPN already connected: $VPN_NAME"
+    return 0
+  fi
+  # scutil を使うと、パスワードを指定する必要があるので networksetup を利用
+  networksetup -connectpppoeservice "${vpn}"
+  wait_until "vpn_connected '${vpn}'" 10000 "timed out on connect"
+  status
+}
+
+stop() {
+  local vpn="${1:-$VPN_NAME}"
+
+  check_vpn_value "${vpn}"
+  if ! vpn_connected; then
+    echo "VPN not connected: $VPN_NAME"
+    return 0
+  fi
+  scutil --nc stop "${vpn}"
+  wait_until "! vpn_connected '${vpn}'" 5000 "timed out on disconnect"
+  status
+}
+
+status() {
+  local vpn="${1:-$VPN_NAME}"
+
+  check_vpn_value "${vpn}"
+  if vpn_connected; then
+    echo "VPN connected: $VPN_NAME"
+  else
+    echo "VPN disconnected: $VPN_NAME"
+  fi
+}
+
+vpn_connected() {
+  scutil --nc status "${vpn}" | sed -n 1p | grep -q 'Connected'
+}
+
+wait_until() {
+  local command="$1" loop_nb=$(($2 / 100)) error_message="${3:-timeout}"
+
+  until eval "${command}" || [[ ${loop_nb} -eq 0 ]]; do
+    sleep 0.1
+    loop_nb=$((${loop_nb} - 1))
+  done
+
+  if [[ ${loop_nb} -eq 0 ]]; then
+    >&2 echo "Error: ${error_message}"
+    return 1
+  fi
+}
+
+check_vpn_value() {
+  local vpn="${1:-$VPN_NAME}"
+
+  if [[ -z "${vpn}" ]]; then
+    >&2 echo 'Error: $VPN_NAME is unset and no vpn name was passed as an argument'
+    return 1
+  else
+    return 0
+  fi
+}
+
+base_cmd() {
+  local command="$1"
+
+  shift || true
+
+  case "${command}" in
+    help | --help) usage ;;
+    status)        status "$@" ;;
+    start | '')    start  "$@" ;;
+    stop)          stop   "$@" ;;
+    *)
+      >&2 echo "Error: unrecognized command"
+      usage
+      return 1
+      ;;
+  esac
+}
+
+base_cmd "$@"
