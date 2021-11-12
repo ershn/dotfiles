@@ -21,6 +21,7 @@ alias lla='ls -lha'
 alias emacs='emacs -nw'
 alias ssh='TERM=screen ssh'
 alias dk='docker-compose'
+alias mk='mutagen compose'
 
 # rbenv
 if hash rbenv 2> /dev/null; then
