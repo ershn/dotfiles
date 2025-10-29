@@ -1,0 +1,19 @@
+[alias]
+	s = status -s
+	ss = status
+	ck = checkout
+	ci = commit
+[core]
+	pager = diff-so-fancy | less --tabs=4 -RF
+	autocrlf = true
+	fscache = true
+	editor = vim
+[interactive]
+	diffFilter = diff-so-fancy --patch
+[pull]
+	rebase = true
+[http]
+	version = HTTP/1.1
+	postBuffer = 157286400
+[include]
+	path = .gitconfig_local

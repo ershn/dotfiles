@@ -1,4 +1,6 @@
-# Installation
+# Installation steps
+
+Clone the repository and checkout the files.
 
 ```sh
 cd
@@ -7,3 +9,5 @@ dotfiles() { git --git-dir="$HOME/.dotfiles.git" --work-tree="$HOME" "$@"; }
 dotfiles config --local status.showUntrackedFiles no
 dotfiles checkout
 ```
+
+Put machine specific git configuration like username and email in `~/.gitconfig_local`.
