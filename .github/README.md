@@ -1,12 +1,13 @@
 # Installation steps
 
-Clone the repository and checkout the files.
+Clone the repository, set local configuration, and checkout the files.
 
 ```sh
 cd
 git clone --bare git@github.com:ershn/dotfiles.git .dotfiles.git
 dotfiles() { git --git-dir="$HOME/.dotfiles.git" --work-tree="$HOME" "$@"; }
 dotfiles config --local status.showUntrackedFiles no
+dotfiles config --local core.autocrlf input
 dotfiles checkout
 ```
 
