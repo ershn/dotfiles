@@ -42,3 +42,5 @@ git()
 		;;
 	esac
 }
+
+alias g=git
