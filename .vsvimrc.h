@@ -34,6 +34,7 @@ nmap gl :vsc ReSharper.ReSharper_QuickDoc<CR>
 nmap ga :vsc ReSharper.ReSharper_ShowUsages<CR>
 nmap gy :vsc ReSharper.ReSharper_GotoTypeDeclaration<CR>
 nmap gi :vsc ReSharper.ReSharper_GoToImplementations<CR>
+" nmap gt :vsc Edit.GoToDefinition<CR>
 nmap gb :vsc ReSharper.ReSharper_GotoBase<CR>
 nmap go :vsc ReSharper.ReSharper_GotoInheritors<CR>
 nmap gcc :vsc ReSharper.ReSharper_LineComment<CR>
@@ -42,6 +43,7 @@ xmap gcc :vsc ReSharper.ReSharper_LineComment<CR>
 nmap ga :vsc Edit.FindAllReferences<CR>
 nmap gy :vsc Edit.GotoTypeDefinition<CR>
 nmap gi :vsc Edit.GoToImplementation<CR>
+nmap gt :vsc Edit.GoToDefinition<CR>
 nmap gb :vsc Edit.GoToBase<CR>
 nmap gcc :vsc Edit.ToggleLineComment<CR>
 xmap gcc :vsc Edit.ToggleLineComment<CR>
@@ -179,6 +181,7 @@ nmap <leader>wi :vsc ReSharper.ReSharper_ShowInspectionWindow<CR>
 nmap <leader>ws :vsc ReSharper.ReSharper_ShowFindResults<CR>
 #else
 nmap <leader>wi :vsc View.CallHierarchy<CR>
+nmap <leader>wu :vsc View.FindReferencesWindow1<CR>
 #endif
 
 #ifdef RESHARPER
