@@ -31,6 +31,9 @@ git()
 	ds)
 		command git diff "$@" -- '*.cs'
 		;;
+	fdf)
+		_git_fzf_status diff "$@"
+		;;
 	fck)
 		_git_fzf_status checkout "$@"
 		;;
