@@ -174,8 +174,10 @@ nmap <leader>tc :vsc ReSharper.ReSharper_UnitTestRunFromContext<CR>
 #endif
 
 nmap <leader>wh :vsc Window.ApplyWindowLayout1<CR>
+nmap <leader>we :vsc View.SolutionExplorer<CR>
 nmap <leader>wo :vsc View.Output<CR>:vsc Window.ActivateDocumentWindow<CR>
 nmap <leader>w,o :vsc Edit.ClearOutputWindow<CR>
+nmap <leader>wa :vsc View.Github.Copilot.Chat<CR>
 #ifdef RESHARPER
 nmap <leader>wi :vsc ReSharper.ReSharper_ShowInspectionWindow<CR>
 nmap <leader>ws :vsc ReSharper.ReSharper_ShowFindResults<CR>
